@@ -46,6 +46,15 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 		uc_reg_read(uc, UC_MIPS_REG_2, &call);
 
 		printf("System call %i\n",call);
+
+		switch(call){
+			case 4:
+				printf("Hello World!\n");
+				break;
+			default:
+				printf("Unknown Call\n");
+				break;
+		}
 	}
 	/*if (intno == 2) {
 		int pc;
@@ -91,10 +100,15 @@ MeStation *create_vm(){
 		return NULL;
 	
 	}
+
+	//Tempoary
 	uc_mem_map(me->uc,0x1000, 2*1024*1024, UC_PROT_ALL);
 	uc_mem_write(me->uc, 0x1000, TEST_CODE, sizeof(TEST_CODE)-1);	
 	
+	//Hook for handling syscalls	
 	uc_hook_add(me->uc, &trace1, UC_HOOK_INTR, handle_intr, me, 1, 0);
+	
+	//debugging stuff
 	uc_hook_add(me->uc, &trace2, UC_HOOK_CODE, code_hook, me, 0x1000, 0x1000);
 
 
