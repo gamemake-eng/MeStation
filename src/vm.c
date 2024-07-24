@@ -20,6 +20,7 @@
 
 #define TEST_CODE "\x04\x00\x02\x24\x09\x00\x04\x24\x0c\x00\x00\x00"
 
+#define START_PRG 0x1E8480
 
 struct MeStation {
 	void* buf;
@@ -105,8 +106,8 @@ MeStation *create_vm(){
 	}
 
 	//Tempoary
-	uc_mem_map(me->uc,0x1000, 2*1024*1024, UC_PROT_ALL);
-	uc_mem_write(me->uc, 0x1000, TEST_CODE, sizeof(TEST_CODE)-1);	
+	uc_mem_map(me->uc,0x1000, 4*1024*1024, UC_PROT_ALL);
+	uc_mem_write(me->uc, START_PRG, TEST_CODE, sizeof(TEST_CODE)-1);	
 	
 	//Hook for handling syscalls	
 	uc_hook_add(me->uc, &trace1, UC_HOOK_INTR, handle_intr, me, 1, 0);
@@ -120,7 +121,7 @@ MeStation *create_vm(){
 	return me;
 }
 int run_vm(MeStation *me){
-	return uc_emu_start(me->uc, 0x1000,0x1000 + sizeof(TEST_CODE) - 1,0,0);
+	return uc_emu_start(me->uc, START_PRG,START_PRG + sizeof(TEST_CODE) - 1,0,0);
 }
 void destroy_vm(MeStation *me){
 	uc_close(me->uc);

@@ -1,3 +1,4 @@
+.org 0x1E8480
 .section .text
 .global __start
 __start:
@@ -7,3 +8,4 @@ __start:
 	syscall
 
 .section .data
+text: .asciiz "Hello"
