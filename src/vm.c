@@ -22,7 +22,7 @@
 
 #define START_PRG 0x1E8480
 
-struct MeStation {
+/*struct MeStation {
 	void* buf;
 	int bufsize;
 	void *mem;
@@ -30,7 +30,7 @@ struct MeStation {
 	int entryPoint;
 	int heapStart;
 	int heapLength;
-};
+};*/
 
 static void code_hook(uc_engine *uc, uint64_t address, uint32_t size, void *user_data)
 {
@@ -113,7 +113,7 @@ MeStation *create_vm(){
 	uc_hook_add(me->uc, &trace1, UC_HOOK_INTR, handle_intr, me, 1, 0);
 	
 	//debugging stuff
-	uc_hook_add(me->uc, &trace2, UC_HOOK_CODE, code_hook, me, 0x1000, 0x1000);
+	uc_hook_add(me->uc, &trace2, UC_HOOK_CODE, code_hook, me, START_PRG, START_PRG + sizeof(TEST_CODE) -1);
 
 
 	printf("Created VM\n");
