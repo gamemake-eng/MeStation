@@ -22,15 +22,6 @@
 
 #define START_PRG 0x1E8480
 
-/*struct MeStation {
-	void* buf;
-	int bufsize;
-	void *mem;
-	uc_engine *uc;
-	int entryPoint;
-	int heapStart;
-	int heapLength;
-};*/
 
 static void code_hook(uc_engine *uc, uint64_t address, uint32_t size, void *user_data)
 {
