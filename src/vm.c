@@ -22,7 +22,7 @@ struct MeStation {
 
 static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 	printf("Intr %i called", intno);
-	if (intno == 2) {
+	/*if (intno == 2) {
 		int pc;
 		uc_reg_read(uc, UC_ARM_REG_PC, &pc);
 		
@@ -34,7 +34,7 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 		
 		printf("%i\n", svc_num);
 	
-	}
+	}*/
 }
 
 MeStation *create_vm(){
@@ -57,7 +57,7 @@ MeStation *create_vm(){
 	uc_err err;
 	uc_hook trace1;
 	
-	err = uc_open(UC_ARCH_ARM, UC_MODE_ARM, &me->uc);
+	err = uc_open(UC_ARCH_MIPS, UC_MODE_MIPS32 + UC_MODE_BIG_ENDIAN, &me->uc);
 	
 	if(err){
 		printf("failed to initialize unicorn: %u (%s)\n", err, uc_strerror(err));
@@ -66,14 +66,6 @@ MeStation *create_vm(){
 		return NULL;
 	
 	}
-	
-	uc_ctl(me->uc, UC_CTL_CPU_MODEL, UC_CPU_ARM_926);
-	
-	//enable floating point
-	uint32_t fpexc;
-	uc_reg_read(me->uc, UC_ARM_REG_FPEXC, &fpexc);
-	fpexc |= (1<<30);
-	uc_reg_write(me->uc, UC_ARM_REG_FPEXC, &fpexc);
 	
 	uc_hook_add(me->uc, &trace1, UC_HOOK_INTR, handle_intr, me, 1, 0);
 	
