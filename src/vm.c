@@ -20,6 +20,7 @@
 
 #define TEST_CODE "\x04\x00\x02\x24\x09\x00\x04\x24\x0c\x00\x00\x00"
 
+
 struct MeStation {
 	void* buf;
 	int bufsize;
@@ -43,12 +44,18 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 
 	if(intno == 17){
 		int call = 0;
+
+		//The syscall number is stored in v0
 		uc_reg_read(uc, UC_MIPS_REG_2, &call);
+
+
 
 		printf("System call %i\n",call);
 
 		switch(call){
 			case 4:
+				//This call will be replaced
+				//with something more useful
 				printf("Hello World!\n");
 				break;
 			default:
@@ -56,19 +63,6 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 				break;
 		}
 	}
-	/*if (intno == 2) {
-		int pc;
-		uc_reg_read(uc, UC_ARM_REG_PC, &pc);
-		
-		//get immediate (-4 bytes from pc)
-		uint32_t svc_cmd;
-		uc_mem_read(uc, pc-4, &svc_cmd, 4);
-		
-		int svc_num = svc_cmd & 0xffffff;
-		
-		printf("%i\n", svc_num);
-	
-	}*/
 }
 
 MeStation *create_vm(){
