@@ -45,18 +45,27 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 	if(intno == 17){
 		int call = 0;
 
+		int a0, a1, a2, a3;
+
 		//The syscall number is stored in v0
 		uc_reg_read(uc, UC_MIPS_REG_2, &call);
 
+		//Store a0-a3
+
+		uc_reg_read(uc, UC_MIPS_REG_A0, &a0);
+		uc_reg_read(uc, UC_MIPS_REG_A1, &a1);
+		uc_reg_read(uc, UC_MIPS_REG_A2, &a2);
+		uc_reg_read(uc, UC_MIPS_REG_A3, &a3);
 
 
-		printf("System call %i\n",call);
+
+		printf("System call %i\nA0: %i\nA1: %i\nA2: %i\nA3: %i\n",call, a0, a1, a2, a3);
 
 		switch(call){
 			case 4:
 				//This call will be replaced
 				//with something more useful
-				printf("Hello World!\n");
+				printf("Hello World! #%i\n", a0);
 				break;
 			default:
 				printf("Unknown Call\n");
