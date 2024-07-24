@@ -21,7 +21,7 @@ struct MeStation {
 };
 
 static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
-
+	printf("Intr %i called", intno);
 	if (intno == 2) {
 		int pc;
 		uc_reg_read(uc, UC_ARM_REG_PC, &pc);
@@ -32,7 +32,7 @@ static void handle_intr(uc_engine *uc, uint32_t intno, void *userdata){
 		
 		int svc_num = svc_cmd & 0xffffff;
 		
-		printf("%i", svc_num);
+		printf("%i\n", svc_num);
 	
 	}
 }
