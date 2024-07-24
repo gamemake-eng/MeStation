@@ -5,4 +5,5 @@ typedef struct MeStation MeStation;
 #define MEM_SIZE 2 * 1024 * 1024
 
 MeStation *create_vm();
+int run_vm(MeStation *me);
 void destroy_vm(MeStation *me);

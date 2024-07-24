@@ -2,8 +2,8 @@
 .global __start
 __start:
 	#exit
-	move $a0, $zero
-	li $v0, 5058
+	li $v0, 1
+	li $a0, 9
 	syscall
 
 .section .data
