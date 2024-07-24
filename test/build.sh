@@ -1,1 +1,2 @@
-clang --target=mips-linux-gnu -nostdlib -static -fuse-ld=lld -v -o test1.elf test1.s
+clang -c -target mips-none-elf -nostdlib test1.s
+ld.lld test1.o -o test1.elf
