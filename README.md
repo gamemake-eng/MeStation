@@ -1,4 +1,4 @@
-#   MeStation - An ARM basted Fantasy Console for 2d games
+#   MeStation - An MIPS basted Fantasy Console for 2d games
 
 More will be added soon
 
